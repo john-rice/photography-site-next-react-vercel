@@ -16,7 +16,6 @@ const MainContent: React.FC<{
   images: ImageProps[];
   photoId: string | string[] | undefined;
 }> = ({ images, photoId }) => {
-  console.log(images);
   const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto();
 
   const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null);
@@ -66,7 +65,8 @@ const MainContent: React.FC<{
               style={{ transform: "translate3d(0, 0, 0)" }}
               placeholder="blur"
               blurDataURL={blurDataUrl}
-              src={`${public_id}?tr=q-80`}
+              src={public_id}
+              quality={80}
               width={720}
               height={480}
               sizes="(max-width: 640px) 100vw,

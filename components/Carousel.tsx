@@ -28,6 +28,12 @@ export default function Carousel({
     closeModal()
   })
 
+  console.log(currentPhoto.public_id)
+
+  if(!currentPhoto) {
+    return null
+  }
+
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       <button
@@ -35,7 +41,7 @@ export default function Carousel({
         onClick={closeModal}
       >
         <MyImage
-          src={currentPhoto.blurDataUrl}
+          src={currentPhoto.public_id}
           className="pointer-events-none h-full w-full"
           alt="blurred background"
           fill

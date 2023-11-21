@@ -70,7 +70,7 @@ export default function SharedModal({
                 className="absolute"
               >
                 <MyImage
-                  src={currentImage.url}
+                  src={currentImage.public_id}
                   alt="Next.js Conf image"
                   width={navigation ? 1280 : 1920}
                   height={navigation ? 853 : 1280}
