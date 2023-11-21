@@ -9,6 +9,8 @@ import imagekit from "../imageKit/imageKit";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
+import { Analytics } from '@vercel/analytics/react';
+ 
 
 const MainContent: React.FC<{
   images: ImageProps[];
@@ -77,6 +79,7 @@ const MainContent: React.FC<{
           </Link>
         ))}
       </div>
+      <Analytics />
     </main>
   );
 };
