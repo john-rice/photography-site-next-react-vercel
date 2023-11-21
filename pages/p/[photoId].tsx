@@ -29,7 +29,7 @@ export default Home
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const results = await listFiles({
-    path: process.env.IMAGEKIT_FOLDER,
+    path: "/sample-photos",
     limit: 400,
   });
 
@@ -55,7 +55,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export async function getStaticPaths() {
   const results = await listFiles({
-    path: process.env.IMAGEKIT_FOLDER,
+    path: "/sample-photos",
     limit: 400,
   });
 

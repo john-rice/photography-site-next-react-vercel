@@ -10,7 +10,7 @@ export default async function getBase64ImageUrl(
     return url
   }
   const response = await fetch(
-    `https://ik.imagekit.io/${process.env.IMAGEKIT_PUBLIC_KEY}/${image.public_id}.${image.format}`
+    `https://ik.imagekit.io/${process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY}/${image.public_id}.${image.format}`
   )
   const buffer = await response.arrayBuffer()
 

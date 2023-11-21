@@ -112,7 +112,7 @@ export default function SharedModal({
               <div className="absolute right-0 top-0 flex items-center gap-2 p-3 text-white">
                 {navigation ? (
                   <a
-                    href={`${process.env.IMAGEKIT_URL_ENDPOINT}/image/upload/${currentImage.public_id}.${currentImage.format}`}
+                    href={`${process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT}/image/upload/${currentImage.public_id}.${currentImage.format}`}
                     className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
                     target="_blank"
                     title="Open fullsize version"
@@ -134,7 +134,7 @@ export default function SharedModal({
                 <button
                   onClick={() =>
                     downloadPhoto(
-                      `${process.env.IMAGEKIT_URL_ENDPOINT}/image/upload/${currentImage.public_id}.${currentImage.format}`,
+                      `${process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT}/image/upload/${currentImage.public_id}.${currentImage.format}`,
                       `${index}.jpg`
                     )
                   }
@@ -197,7 +197,7 @@ export default function SharedModal({
                             ? "brightness-110 hover:brightness-110"
                             : "brightness-50 contrast-125 hover:brightness-75"
                         } h-full transform object-cover transition`}
-                        src={`${process.env.IMAGEKIT_URL_ENDPOINT}/image/upload/c_scale,w_180/${public_id}.${format}`}
+                        src={`${process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT}/image/upload/c_scale,w_180/${public_id}.${format}`}
                       />
                     </motion.button>
                   ))}

@@ -16,6 +16,7 @@ const MainContent: React.FC<{
   images: ImageProps[];
   photoId: string | string[] | undefined;
 }> = ({ images, photoId }) => {
+  console.log(images);
   const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto();
 
   const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null);
@@ -65,7 +66,7 @@ const MainContent: React.FC<{
               style={{ transform: "translate3d(0, 0, 0)" }}
               placeholder="blur"
               blurDataURL={blurDataUrl}
-              src={`${process.env.IMAGEKIT_URL_ENDPOINT}/${public_id}.${format}?tr=q-80`}
+              src={`${public_id}?tr=q-80`}
               width={720}
               height={480}
               sizes="(max-width: 640px) 100vw,
@@ -108,7 +109,7 @@ export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
   const results = await listFiles({
-    path: process.env.IMAGEKIT_FOLDER,
+    path: "/sample-photos",
     limit: 400,
   });
 
@@ -118,7 +119,6 @@ export const getStaticProps: GetStaticProps = async () => {
     width: fileObject.width,
     public_id: fileObject.filePath,
     format: fileObject.filePath.split(".").pop(),
-    url: fileObject.url,
   }));
 
   const blurImagePromises = results.map((fileObject, i) => {
@@ -128,7 +128,6 @@ export const getStaticProps: GetStaticProps = async () => {
       width: fileObject.width,
       public_id: fileObject.filePath,
       format: fileObject.filePath.split(".").pop(),
-      url: fileObject.url,
     };
     return getBase64ImageUrl(imageProps);
   });

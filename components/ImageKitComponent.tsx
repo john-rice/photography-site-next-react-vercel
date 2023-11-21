@@ -8,13 +8,11 @@ const imageKitLoader = ({ src, width, quality }) => {
     params.push(`q-${quality}`);
   }
   const paramsString = params.join(",");
-  let urlEndpoint = process.env.IMAGEKIT_URL_ENDPOINT;
-  if (urlEndpoint[urlEndpoint.length - 1] === "/")
-    urlEndpoint = urlEndpoint.substring(0, urlEndpoint.length - 1);
+  let urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT;
   return `${urlEndpoint}/${src}?tr=${paramsString}`;
 };
 
-export const MyImage = forwardRef<HTMLImageElement, ImageProps>((_props, ref) => {
+export const MyImage = forwardRef<HTMLImageElement, ImageProps>((props, ref) => {
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
@@ -31,10 +29,7 @@ export const MyImage = forwardRef<HTMLImageElement, ImageProps>((_props, ref) =>
     <div ref={imgRef}>
       <Image
         loader={imageKitLoader}
-        src="default-image.jpg"
-        alt="Sample image"
-        width={400}
-        height={400}
+        {...props}
       />
     </div>
   );
