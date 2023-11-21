@@ -5,7 +5,7 @@ let cachedResults;
 export default async function getResults() {
   if (!cachedResults) {
     const fetchedResults = await listFiles({
-      path: "your_imagekit_folder_path",
+      path: process.env.IMAGEKIT_FOLDER,
       limit: 400,
     });
 

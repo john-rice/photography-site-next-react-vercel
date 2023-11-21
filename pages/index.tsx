@@ -108,7 +108,7 @@ export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
   const results = await listFiles({
-    path: "your_imagekit_folder_path",
+    path: process.env.IMAGEKIT_FOLDER,
     limit: 400,
   });
 
