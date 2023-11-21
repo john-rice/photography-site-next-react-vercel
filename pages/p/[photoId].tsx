@@ -1,12 +1,9 @@
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-// import Carousel from '../../components/Carousel'
-import getResults from '../../utils/cachedImages'
-import cloudinary from '../../utils/cloudinary'
-import getBase64ImageUrl from '../../utils/generateBlurPlaceholder'
 import type { ImageProps } from '../../utils/types'
-import { MyImage } from '../../components/ImageKitComponent'
+import imagekit from '../../imageKit/imageKit' 
+import Carousel from '../../components/Carousel'
 
 const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
   const router = useRouter()
@@ -19,10 +16,10 @@ const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
         <title>Doggy Time</title>
       </Head>
       <main className="mx-auto max-w-[1960px] p-4">
-        {/* <MyImage
-          src={currentPhoto}
+        <Carousel
+          currentPhoto={currentPhoto}
           index={index}
-        /> */}
+        />
       </main>
     </>
   )
@@ -31,25 +28,26 @@ const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
 export default Home
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const results = await getResults()
+  const results = await imagekit.listFiles({
+    path: process.env.IMAGEKIT_FOLDER,
+    limit: 400,
+  });
 
-  const reducedResults: ImageProps[] = []
-  let i = 0
-  for (const result of results.resources) {
-    reducedResults.push({
-      id: i,
-      height: result.height,
-      width: result.width,
-      public_id: result.public_id,
-      format: result.format,
-    })
-    i++
-  }
+  const reducedResults: ImageProps[] = results.map((result, i) => ({
+    id: i,
+    height: result.height,
+    width: result.width,
+    public_id: result.filePath,
+    format: result.filePath.split('.').pop(),
+    url: imagekit.url({
+      path: result.filePath,
+      transformation: [{ quality: 80 }],
+    }),
+  }));
 
   const currentPhoto = reducedResults.find(
     (img) => img.id === Number(context.params.photoId)
   )
-  currentPhoto.blurDataUrl = await getBase64ImageUrl(currentPhoto)
 
   return {
     props: {
@@ -59,16 +57,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export async function getStaticPaths() {
-  const results = await cloudinary.v2.search
-    .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
-    .sort_by('public_id', 'desc')
-    .max_results(400)
-    .execute()
+  const results = await imagekit.listFiles({
+    path: process.env.IMAGEKIT_FOLDER,
+    limit: 400,
+  });
 
-  const fullPaths = []
-  for (let i = 0; i < results.resources.length; i++) {
-    fullPaths.push({ params: { photoId: i.toString() } })
-  }
+  const fullPaths = results.map((_file, i) => ({ params: { photoId: i.toString() } }));
 
   return {
     paths: fullPaths,

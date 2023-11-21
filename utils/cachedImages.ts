@@ -1,17 +1,16 @@
-import cloudinary from './cloudinary'
+import imagekit from '../imageKit/imageKit';
 
-let cachedResults
+let cachedResults;
 
 export default async function getResults() {
   if (!cachedResults) {
-    const fetchedResults = await cloudinary.v2.search
-      .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
-      .sort_by('public_id', 'desc')
-      .max_results(400)
-      .execute()
+    const fetchedResults = await imagekit.listFiles({
+      path: 'your_imagekit_folder_path',
+      limit: 400,
+    });
 
-    cachedResults = fetchedResults
+    cachedResults = fetchedResults;
   }
 
-  return cachedResults
+  return cachedResults;
 }
