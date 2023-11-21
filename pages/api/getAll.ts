@@ -1,14 +1,19 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { imagekit } from "../../imageKit/imageKit";
+import imagekit from "../../imageKit/imageKit";
 
-export default async function listFiles(
-  _req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function listFiles(options) {
   try {
-    const result = await imagekit.listFiles({});
-    res.status(200).send({ result });
+    const result = await imagekit.listFiles(options);
+
+    const resultsWithUrls = result.map((result) => ({
+      ...result,
+      url: imagekit.url({
+        path: result.filePath,
+        transformation: [{ quality: 80 }],
+      }),
+    }));
+    return resultsWithUrls;
   } catch (error) {
-    res.status(500).send({ error: "Failed to list files" });
+    console.error("Failed to list files", error);
+    return null;
   }
 }

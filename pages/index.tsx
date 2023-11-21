@@ -5,12 +5,12 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import Modal from "../components/Modal";
 import { MyImage } from "../components/ImageKitComponent";
-import imagekit from "../imageKit/imageKit";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import { Analytics } from '@vercel/analytics/react';
  
+import listFiles from "./api/getAll";
 
 const MainContent: React.FC<{
   images: ImageProps[];
@@ -65,10 +65,7 @@ const MainContent: React.FC<{
               style={{ transform: "translate3d(0, 0, 0)" }}
               placeholder="blur"
               blurDataURL={blurDataUrl}
-              src={imagekit.url({
-                path: `${public_id}.${format}`,
-                transformation: [{ quality: 80 }],
-              })}
+              src={`${process.env.IMAGEKIT_URL_ENDPOINT}/${public_id}.${format}?tr=q-80`}
               width={720}
               height={480}
               sizes="(max-width: 640px) 100vw,
@@ -110,7 +107,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const results = await imagekit.listFiles({
+  const results = await listFiles({
     path: "your_imagekit_folder_path",
     limit: 400,
   });
@@ -121,15 +118,12 @@ export const getStaticProps: GetStaticProps = async () => {
     width: fileObject.width,
     public_id: fileObject.filePath,
     format: fileObject.filePath.split(".").pop(),
-    url: imagekit.url({
-      path: fileObject.filePath,
-      transformation: [{ quality: 80 }],
-    }),
+    url: fileObject.url,
   }));
 
   const blurImagePromises = results.map((fileObject, i) => {
     const imageProps: ImageProps = {
-      id: i, 
+      id: i,
       height: fileObject.height,
       width: fileObject.width,
       public_id: fileObject.filePath,

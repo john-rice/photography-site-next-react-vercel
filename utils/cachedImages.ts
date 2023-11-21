@@ -1,11 +1,11 @@
-import imagekit from '../imageKit/imageKit';
+import listFiles from "../pages/api/getAll";
 
 let cachedResults;
 
 export default async function getResults() {
   if (!cachedResults) {
-    const fetchedResults = await imagekit.listFiles({
-      path: 'your_imagekit_folder_path',
+    const fetchedResults = await listFiles({
+      path: "your_imagekit_folder_path",
       limit: 400,
     });
 

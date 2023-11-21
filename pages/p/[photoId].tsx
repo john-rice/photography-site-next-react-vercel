@@ -2,7 +2,7 @@ import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import type { ImageProps } from '../../utils/types'
-import imagekit from '../../imageKit/imageKit' 
+import listFiles from '../api/getAll'
 import Carousel from '../../components/Carousel'
 
 const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
@@ -28,7 +28,7 @@ const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
 export default Home
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const results = await imagekit.listFiles({
+  const results = await listFiles({
     path: process.env.IMAGEKIT_FOLDER,
     limit: 400,
   });
@@ -39,10 +39,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     width: result.width,
     public_id: result.filePath,
     format: result.filePath.split('.').pop(),
-    url: imagekit.url({
-      path: result.filePath,
-      transformation: [{ quality: 80 }],
-    }),
+    url: result.url
   }));
 
   const currentPhoto = reducedResults.find(
@@ -57,7 +54,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export async function getStaticPaths() {
-  const results = await imagekit.listFiles({
+  const results = await listFiles({
     path: process.env.IMAGEKIT_FOLDER,
     limit: 400,
   });
