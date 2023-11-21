@@ -1,11 +1,11 @@
 module.exports = {
   images: {
     formats: ['image/avif', 'image/webp'],
-    domains: ['res.cloudinary.com'],
+    domains: ['ik.imagekit.io'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'res.cloudinary.com',
+        hostname: 'ik.imagekit.io',
         port: '',
         pathname: '/my-account/**',
       },
