@@ -27,13 +27,10 @@ export default function Carousel({
   useKeypress('Escape', () => {
     closeModal()
   })
-
-  console.log(currentPhoto.public_id)
-
+  
   if(!currentPhoto) {
     return null
   }
-
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       <button

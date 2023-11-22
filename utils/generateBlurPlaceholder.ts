@@ -1,16 +1,14 @@
-import type { ImageProps } from './types'
-
-const cache = new Map<ImageProps, string>()
+const cache = new Map<string, string>()
 
 export default async function getBase64ImageUrl(
-  image: ImageProps
+  image: string
 ): Promise<string> {
   let url = cache.get(image)
   if (url) {
     return url
   }
   const response = await fetch(
-    `https://ik.imagekit.io/${process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY}/${image.public_id}.${image.format}`
+    `${process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT}${image}`
   )
   const buffer = await response.arrayBuffer()
 
