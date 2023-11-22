@@ -41,7 +41,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     format: result.filePath.split('.').pop(),
   }));
 
-  console.log("results: ",results)
 
   const currentPhoto = reducedResults.find(
     (img) => img.id === Number(context.params.photoId)

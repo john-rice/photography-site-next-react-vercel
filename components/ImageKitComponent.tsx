@@ -1,5 +1,6 @@
 import Image, { ImageProps } from "next/image";
 import { forwardRef, useEffect, useRef, useState } from "react";
+import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 
 const imageKitLoader = ({ src, width, quality }) => {
   if (src[0] === "/") src = src.slice(1);
@@ -18,17 +19,9 @@ export const MyImage = forwardRef<HTMLImageElement, ImageProps>(
     const [blurDataUrl, setBlurDataUrl] = useState("");
 
     useEffect(() => {
-      fetch(
-        process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT +
-          `/${props.src}?tr=n-ik_ml_thumbnail`
-      )
-        .then((res) => {
-          return res.blob();
-        })
-        .then((blob) => {
-          const url = URL.createObjectURL(blob);
-          setBlurDataUrl(url);
-        });
+      if (typeof props.src === "string") {
+        getBase64ImageUrl(props.src).then(setBlurDataUrl);
+      }
     }, [props.src]);
 
     useEffect(() => {
@@ -40,9 +33,15 @@ export const MyImage = forwardRef<HTMLImageElement, ImageProps>(
         }
       }
     }, [ref]);
+
     return (
       <div ref={imgRef}>
-        <Image loader={imageKitLoader} placeholder={blurDataUrl ? "empty" : undefined} blurDataURL={blurDataUrl} {...props} />
+        <Image
+          loader={imageKitLoader}
+          placeholder={blurDataUrl ? "blur" : undefined}
+          blurDataURL={blurDataUrl}
+          {...props}
+        />
       </div>
     );
   }

@@ -1,6 +1,7 @@
+import type { ListFileOptions } from "imagekit/dist/libs/interfaces";
 import imagekit from "../../imageKit/imageKit";
 
-export default async function listFiles(options) {
+export default async function listFiles(options: ListFileOptions) {
   try {
     const result = await imagekit.listFiles(options);
     const resultsWithUrls = result.map((result) => ({
