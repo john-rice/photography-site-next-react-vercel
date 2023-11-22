@@ -9,7 +9,7 @@ import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import { Analytics } from "@vercel/analytics/react";
-import { useTransition, a} from '@react-spring/web'
+// import { useTransition, a} from '@react-spring/web'
 import listFiles from "./api/getAll";
 
 const MainContent: React.FC<{
