@@ -1,6 +1,6 @@
 const cache = new Map<string, string>()
 
-export default async function getBase64ImageUrl(
+export async function getBase64ImageUrl(
   image: string
 ): Promise<string> {
   let url = cache.get(image)
@@ -16,3 +16,5 @@ export default async function getBase64ImageUrl(
   cache.set(image, url)
   return url
 }
+
+export default getBase64ImageUrl;
